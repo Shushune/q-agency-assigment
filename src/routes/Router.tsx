@@ -6,13 +6,18 @@ const PostsPage = lazy(() => import("../screens/Posts/PostsPage"));
 const PostDetails = lazy(() => import("../screens/Posts/PostDetails"));
 
 const Router = () => {
+    const propsMessage: string = 'Hello from';
+    const helloFromMessage = (message: string) => {
+        return console.log(message);
+    }
+
     return (
         <>
             <BrowserRouter>
                 <Suspense fallback={<Loader loadingText="Loading..." />}>
                     <Routes>
-                        <Route path="/posts" element={<PostsPage />} />
-                        <Route path="/post/:id" element={<PostDetails />} />
+                        <Route path="/posts" element={<PostsPage helloFrom={helloFromMessage} propsMessage={propsMessage} />} />
+                        <Route path="/post/:id" element={<PostDetails helloFrom={helloFromMessage} propsMessage={propsMessage} />} />
                         <Route
                             path="*"
                             element={<Navigate to="/posts" replace />}

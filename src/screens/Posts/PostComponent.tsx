@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 import useGetPostComments from "../../hooks/useGetPostComments";
 import { IComment } from "../../models/comment";
@@ -8,17 +8,21 @@ import CommentComponent from "../Comments/CommentComponent";
 const PostComponent = (props: {
     post: IPost;
     handleClick?: (id: number) => void;
+    propsMessage: string;
+    helloFrom: (message: string) => void;
 }) => {
-    const { post, handleClick } = props;
+    const { post, handleClick, propsMessage, helloFrom } = props;
     const comments = useGetPostComments(post.id);
 
-    useEffect(() => {
+    useMemo(() => {
+        helloFrom(`${propsMessage} PostComponent`);
         return () => {};
-    }, []);
+    }, [helloFrom, propsMessage]);
 
     return (
         <>
             <div
+                data-testid={`specific-post-${post.id}`}
                 className="post-wrapper"
                 onClick={() => {
                     if (handleClick) {
@@ -35,9 +39,14 @@ const PostComponent = (props: {
                     <p className="bolded">{comments.length} comments: </p>
                 </div>
                 <div className="comments-wrapper">
-                {comments.map((comment: IComment) => (
-                    <CommentComponent key={comment.id} comment={comment} />
-                ))}
+                    {comments.map((comment: IComment) => (
+                        <CommentComponent
+                            key={comment.id}
+                            comment={comment}
+                            propsMessage={propsMessage}
+                            helloFrom={helloFrom}
+                        />
+                    ))}
                 </div>
             </div>
         </>

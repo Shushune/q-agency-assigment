@@ -1,12 +1,17 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { IComment } from "../../models/comment";
 
-const CommentComponent = (props: { comment: IComment }) => {
-    const { comment } = props;
+const CommentComponent = (props: {
+    comment: IComment;
+    propsMessage: string;
+    helloFrom: (message: string) => void;
+}) => {
+    const { comment, propsMessage, helloFrom } = props;
 
-    useEffect(() => {
+    useMemo(() => {
+        helloFrom(`${propsMessage} CommentComponent`);
         return () => {};
-    }, []);
+    }, [helloFrom, propsMessage]);
 
     return (
         <>
